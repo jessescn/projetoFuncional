@@ -1,0 +1,40 @@
+[{
+    "datas": {
+      "year": 2017,
+      "month": 2,
+      "dayOfMonth": 1,
+      "hourOfDay": 0,
+      "minute": 0,
+      "second": 0
+    },
+    "textoIdentificador": "Saldo Corrente",
+    "valor": 89731.57,
+    "descricao": "Saldo inicial do mes",
+    "numeroDOC": "00000000",
+    "classificada": true,
+    "tipos": [
+      "OUTRAS_RECEITAS",
+      "SALDO_CORRENTE"
+    ],
+    "arquivos": []
+  },
+  {
+    "datas": {
+      "year": 2017,
+      "month": 2,
+      "dayOfMonth": 1,
+      "hourOfDay": 8,
+      "minute": 15,
+      "second": 22
+    },
+    "textoIdentificador": "CHQ CMP INTEGRADA",
+    "valor": -10271.16,
+    "descricao": "",
+    "numeroDOC": "002.126",
+    "classificada": false,
+    "tipos": [
+      "OUTROS"
+    ],
+    "arquivos": []
+  }
+]
