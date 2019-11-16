@@ -6,14 +6,16 @@ module JsonParser
 
 import qualified Data.ByteString.Lazy as B  
 import Data.Aeson
+import Data.Maybe
 import Tipos
 
 jsonFile :: FilePath
-jsonFile = "data/transacao.json"
+jsonFile = "data/transacoes.json"
 
 getJSON :: IO B.ByteString
 getJSON = B.readFile jsonFile
 
-getTransations :: IO (Either String [Transacao])
-getTransations = (eitherDecode <$> getJSON) :: IO (Either String [Transacao])
-
+getTransations :: IO [Transacao]
+getTransations = do
+    transations <- (decode <$> getJSON) :: IO (Maybe [Transacao])
+    return (fromJust transations)
