@@ -40,3 +40,9 @@ instance ToJSON Transacao
 
 instance Eq Transacao where
     Transacao _ id1 _ _ _ _ == Transacao _ id2 _ _ _ _  = id1 == id2
+
+instance Ord Transacao where
+    compare (Transacao _ _ v1 _ _ _)  (Transacao _ _ v2 _ _ _) = compare v1 v2
+    (Transacao _ _ v1 _ _ _) > (Transacao _ _ v2 _ _ _ ) = v1 > v2
+    (Transacao _ _ v1 _ _ _) < (Transacao _ _ v2 _ _ _) = v1 < v2
+    (Transacao _ _ v1 _ _ _) <= (Transacao _ _ v2 _ _ _) = v1 <= v2
