@@ -41,16 +41,16 @@ checkDay d t = d == ((dayOfMonth . datas) t)
 filterByYear :: Int -> IO [Transacao]
 filterByYear year = do
     transations <- getTransations
-    return (filter (checkYear year) transations)
+    return (((filter . checkYear) year) transations)
     
 -- Filtrar transações por ano e mês.
 filterByYearAndMonth :: Int -> Int  -> IO [Transacao]
 filterByYearAndMonth year month = do
     filteredByYear <- filterByYear year
-    return (filter (checkMonth month) filteredByYear)
+    return (((filter . checkMonth) month) filteredByYear)
     
     -- Filtrar transações por ano, mês e dia.
 filterByYearMonthAndDay :: Int -> Int -> Int -> IO [Transacao]
 filterByYearMonthAndDay year month day = do
     filteredByMonth <- (filterByYearAndMonth year month)
-    return (filter (checkDay day) filteredByMonth)
+    return (((filter . checkDay) day) filteredByMonth)

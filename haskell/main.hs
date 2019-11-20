@@ -99,7 +99,7 @@ getAnnualBalanceMean year = (_getAnnualMean year calculateMonthBalance)
 
 _getAnnualMean :: Int -> (Int -> Int -> IO Double) -> IO Double
 _getAnnualMean year f = do
-    total <-  sequence (map (f year) [0..11])
+    total <-  sequence (((map . f) year) [0..11])
     return ((sum total) / 12)
 
 -- Retornar o fluxo de caixa de determinado mês/ano. O fluxo de caixa nada mais é do que uma lista contendo pares (dia,saldoFinalDoDia).
