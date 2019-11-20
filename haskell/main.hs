@@ -1,42 +1,8 @@
-import JsonParser
 import Tipos
 import Data.List (groupBy)
+import Utils
 
--- CHECKERS
-
--- Checando o ano 
-checkYear :: Int -> Transacao -> Bool
-checkYear y t = y == ((year . datas) t)
-
--- Checando o mês
-checkMonth :: Int -> Transacao -> Bool
-checkMonth m  t = m == ((month . datas) t)
-
--- Checando o dia
-checkDay :: Int -> Transacao -> Bool
-checkDay d t = d == ((dayOfMonth . datas) t)
-
--- FILTERS
-
--- Filtrar transações por ano.
-filterByYear :: Int -> IO [Transacao]
-filterByYear year = do
-    transations <- getTransations
-    return (filter (checkYear year) transations)
-    
--- Filtrar transações por ano e mês.
-filterByYearAndMonth :: Int -> Int  -> IO [Transacao]
-filterByYearAndMonth year month = do
-    filteredByYear <- filterByYear year
-    return (filter (checkMonth month) filteredByYear)
-    
-    -- Filtrar transações por ano, mês e dia.
-filterByYearMonthAndDay :: Int -> Int -> Int -> IO [Transacao]
-filterByYearMonthAndDay year month day = do
-    filteredByMonth <- (filterByYearAndMonth year month)
-    return (filter (checkDay day) filteredByMonth)
-
--- OPERATIONS 
+-- OPERATIONS  --
 
 -- Verificando se a 'Transacao' é uma receita ou despesa
 -- não pode ser do tipo 'APLICACAO' nem 'VALOR_APLICACAO'
@@ -51,13 +17,14 @@ isIncome t = (isIncomeOrExpense t) && (valor t) >= 0
 isExpense:: Transacao -> Bool
 isExpense t = (isIncomeOrExpense t) && (valor t) < 0
 
-
+-- Retorna a lista de débitos
 getExpenses :: Int -> Int -> IO [Transacao]
 getExpenses y m =  do
     -- Removendo a transação SALDO_CORRENTE
     transations <- (filterByYearAndMonth y m)
     return (drop 1 (filter isExpense transations))
 
+-- Retorna a lista de créditos
 getIncomes :: Int -> Int -> IO [Transacao]
 getIncomes y m =  do
     -- Removendo a transação SALDO_CORRENTE
@@ -136,7 +103,6 @@ _getAnnualMean year f = do
     return ((sum total) / 12)
 
 -- Retornar o fluxo de caixa de determinado mês/ano. O fluxo de caixa nada mais é do que uma lista contendo pares (dia,saldoFinalDoDia).
--- 
 getCashFlow :: Int -> Int -> IO [(Int, Double)]
 getCashFlow year month = do
     expenses <- (getExpenses year month)
@@ -151,17 +117,3 @@ sumDayFlow transations = (((dayOfMonth . datas) (transations !! 0)) , (sum (map 
 
 sameDay :: Transacao -> Transacao -> Bool
 sameDay t1 t2 = ((dayOfMonth . datas) t1) == ((dayOfMonth . datas) t2)
-
--- Ordena a lista dos incomes + expenses já que o groupBy agrupa apenas os adjacentes
-quicksort :: [Transacao] -> [Transacao]
-quicksort [] = []
-quicksort (p:xs) = (quicksort lesser) ++ [p] ++ (quicksort greater)
-    where 
-        lesser = filter (lessThan p) xs
-        greater =  filter (greaterThan p) xs
-
-lessThan :: Transacao -> Transacao -> Bool        
-lessThan p t2 = ((dayOfMonth . datas) p) > ((dayOfMonth . datas) t2)
-
-greaterThan:: Transacao -> Transacao -> Bool
-greaterThan p t2 = not (lessThan p t2)
