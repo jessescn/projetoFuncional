@@ -1,6 +1,5 @@
 let transactions;
 const input = document.getElementById("input")
-const firstBalance = 89731.57
 const sumReducer = (accumulator, current) => accumulator + current.valor
 
 function getData(){
@@ -9,6 +8,8 @@ function getData(){
     .then(json => transactions = json);
 }
 
+getData();
+
 function handleInput(f){
   const { value } = input;
   const inputValues = value.split(" ")
@@ -16,7 +17,7 @@ function handleInput(f){
   console.log(f(...inputValues));
 }
 
-getData();
+
 
 function filterByYear(year){
   return transactions.filter(({data}) => data.year === year)
@@ -36,28 +37,24 @@ function filterValidTransactions(data){
 
 function filterReceipts(data){
   const valid = filterValidTransactions(data);
-  return valid.filter( ({valor}) => valor > 0);
+  return valid.filter(({valor}) => valor > 0);
 }
 
 function filterDebts(data){
   const valid = filterValidTransactions(data);
-  return valid.filter( ({valor}) => valor < 0);
+  return valid.filter(({valor}) => valor < 0);
 }
 
 function receiptValue(year, month){
   const dateFiltered = filterByYearMonth(year, month);
-  const receiptsOnly = filterReceipts(dateFiltered);
-  return ( receiptsOnly.reduce(
-    (accumulator, current) => accumulator + current.valor,
-    0));
+  const receipts = filterReceipts(dateFiltered);
+  return receipts.reduce(sumReducer, 0);
 }
 
 function debtValue(year, month){
   const dateFiltered = filterByYearMonth(year, month);
-  const receiptsOnly = filterDebts(dateFiltered);
-  return ( receiptsOnly.reduce(
-    (accumulator, current) => accumulator + current.valor,
-    0));
+  const debts = filterDebts(dateFiltered);
+  return debts.reduce(sumReducer, 0);
 }
 
 function leftover(year, month){
@@ -73,54 +70,37 @@ const validDates = years
   .filter(({year, month})=> (year != 2017 || month >= 2) && (year != 2019 || month <= 10))
 
 function balance(year, month = 11){
-  // const datesBefore = validDates.filter(({year: y, month: m}) => (y == year && m <= month) || (y < year))
-  // const firstBalance = 89731.57
-  // const alterations = datesBefore
-  //   .map(({year: y, month: m}) => leftover(y, m))
-  //   .reduce((acc, cur) => acc + cur)
-  // return firstBalance + alterations
-  if(year == 2017 && month == 1) return 89731.57
-  const newYear = month == 0 ? year - 1 : year
-  const newMonth = month == 0 ? 11 : month - 1
-  return balance(newYear, newMonth) + leftover(year, month)
+  const initialBalance = filterByYearMonth(year, month)[0].valor;
+  return initialBalance + leftover(year, month)
 }
 
 function maxBalance(year, month){
-  const datesBefore = validDates.filter(({year: y, month: m}) => (y == year && m <= month) || (y < year))
-  const alterations = datesBefore
-    .map(({year: y, month: m}) => balance(y, m))
-    .reduce((acc, cur) => Math.max(acc, cur))
-  return alterations
+  const balances = cashFlow(year, month).map(({balance}) => balance)
+  return Math.max(...balances)
 }
 
 function minBalance(year, month){
-  const datesBefore = validDates.filter(({year: y, month: m}) => (y == year && m <= month) || (y < year))
-  const alterations = datesBefore
-    .map(({year: y, month: m}) => balance(y, m))
-    .reduce((acc, cur) => Math.min(acc, cur))
-  return alterations
+  const balances = cashFlow(year, month).map(({balance}) => balance)
+  return Math.min(...balances)
 }
 
 function receiptMeanByYear(year){
   const dateFiltered = filterByYear(year);
-  const receiptsOnly = filterReceipts(dateFiltered);
-  return ( receiptsOnly.reduce(
-    (accumulator, current) => accumulator + current.valor,
-    0)) / receiptsOnly.length;
+  const receipts = filterReceipts(dateFiltered);
+  return receipts.reduce(sumReducer, 0) / receipts.length;
 }
 
 function debtMeanByYear(year){
   const dateFiltered = filterByYear(year);
-  const debtsOnly = filterDebts(dateFiltered);
-  return ( debtsOnly.reduce(
-    (accumulator, current) => accumulator + current.valor,
-    0)) / debtsOnly.length;
+  const debts = filterDebts(dateFiltered);
+  return debts.reduce(sumReducer, 0) / debts.length;
 }
 
 function leftOverMeanByYear(year){
-  const dateFiltered = validDates.filter(({year: y}) => y == year);
-  return dateFiltered.map(({year: y, month: m}) => leftover(y, m))
-    .reduce((acc, cur) => acc + cur) / dateFiltered.length
+  const filteredDates = validDates.filter(({year: y}) => y == year);
+  const leftOvers = filteredDates.map(({year: y, month: m}) => leftover(y, m))
+  const sum = leftOvers.reduce(sumReducer) / filteredDates.length
+  return sum / filteredDates.length;
 }
 
 function leftOverOfDay(year, month, day){
@@ -141,7 +121,7 @@ function cashFlowMonth(year, month){
   const monthTransactions = filterByYearMonth(year, month)
   const days = monthTransactions.map(item => item.data.dayOfMonth) 
   const validDays = days.reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], [])
-  return (validDays.map((day) => {return {month, day: day ,balance: "R$ " + dayBalance(year, month, day).toFixed(2)}}))
+  return (validDays.map((day) => {return {month, day: day ,balance: dayBalance(year, month, day)}}))
 }
 
 function cashFlow(year, month = -1){
