@@ -74,14 +74,20 @@ function balance(year, month = 11){
   return initialBalance + leftover(year, month)
 }
 
+function compareMonthBalances(year, month, f){
+  const monthTransactions = filterByYearMonth(year, month)
+  const transactions = filterValidTransactions(monthTransactions);
+  const initialBalance = monthTransactions[0].valor;
+  const balances = transactions.map((item, index) => (transactions.slice(0, index + 1)).reduce(sumReducer, 0))
+  return f(initialBalance, ...balances)
+}
+
 function maxBalance(year, month){
-  const balances = cashFlow(year, month).map(({balance}) => balance)
-  return Math.max(...balances)
+  return compareMonthBalances(year, month, Math.max)
 }
 
 function minBalance(year, month){
-  const balances = cashFlow(year, month).map(({balance}) => balance)
-  return Math.min(...balances)
+  return compareMonthBalances(year, month, Math.min)
 }
 
 function receiptMeanByYear(year){
