@@ -1,0 +1,79 @@
+[
+    {
+        "datas": {
+          "year": 2021,
+          "month": 1,
+          "dayOfMonth": 1,
+          "hourOfDay": 0,
+          "minute": 0,
+          "second": 0
+        },
+        "textoIdentificador": "Saldo Corrente",
+        "valor": 10000,
+        "descricao": "Saldo inicial do mes",
+        "numeroDOC": "00000000",
+        "classificada": true,
+        "tipos": [
+          "OUTRAS_RECEITAS",
+          "SALDO_CORRENTE"
+        ],
+        "arquivos": []
+      },
+      {
+        "datas": {
+          "year": 2020,
+          "month": 1,
+          "dayOfMonth": 1,
+          "hourOfDay": 0,
+          "minute": 0,
+          "second": 0
+        },
+        "textoIdentificador": "Saldo Corrente",
+        "valor": -550,
+        "descricao": "",
+        "numeroDOC": "00000000",
+        "classificada": true,
+        "tipos": [
+          "OUTRAS_RECEITAS"
+        ],
+        "arquivos": []
+      },
+      {
+        "datas": {
+          "year": 2020,
+          "month": 1,
+          "dayOfMonth": 1,
+          "hourOfDay": 0,
+          "minute": 0,
+          "second": 0
+        },
+        "textoIdentificador": "Saldo Corrente",
+        "valor": 300,
+        "descricao": "",
+        "numeroDOC": "00000000",
+        "classificada": true,
+        "tipos": [
+          "OUTRAS_RECEITAS"
+        ],
+        "arquivos": []
+      },
+      {
+        "datas": {
+          "year": 2020,
+          "month": 1,
+          "dayOfMonth": 1,
+          "hourOfDay": 0,
+          "minute": 0,
+          "second": 0
+        },
+        "textoIdentificador": "Saldo Corrente",
+        "valor": 100,
+        "descricao": "",
+        "numeroDOC": "00000000",
+        "classificada": true,
+        "tipos": [
+          "OUTRAS_RECEITAS"
+        ],
+        "arquivos": []
+      }
+]

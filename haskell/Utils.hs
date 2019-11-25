@@ -1,29 +1,22 @@
 module Utils (
-    quicksort,
+    intersect,
     checkDay,
     checkMonth,
     checkYear,
     filterByYear,
     filterByYearAndMonth,
-    filterByYearMonthAndDay
+    filterByYearMonthAndDay,
+    initialBalance,
+    firstTransaction
 ) where
 
 import Tipos
 import JsonParser
 
--- Ordena uma lista de Transacao por dia
-quicksort :: [Transacao] -> [Transacao]
-quicksort [] = []
-quicksort (p:xs) = (quicksort lesser) ++ [p] ++ (quicksort greater)
-    where 
-        lesser = filter (lessThan p) xs
-        greater =  filter (greaterThan p) xs
-
-lessThan :: Transacao -> Transacao -> Bool        
-lessThan p t2 = ((dayOfMonth . datas) p) > ((dayOfMonth . datas) t2)
-
-greaterThan:: Transacao -> Transacao -> Bool
-greaterThan p t2 = not (lessThan p t2)
+intersect []  _ = []
+intersect (x:xs) ys
+    | x `elem` ys = [x]++(intersect xs ys)
+    | otherwise = (intersect xs ys)
 
 -- Checando o ano 
 checkYear :: Int -> Transacao -> Bool
@@ -40,8 +33,8 @@ checkDay d t = d == ((dayOfMonth . datas) t)
 -- Filtrar transações por ano.
 filterByYear :: Int -> IO [Transacao]
 filterByYear year = do
-    transations <- getTransations
-    return (((filter . checkYear) year) transations)
+    transactions <- getTransactions
+    return (((filter . checkYear) year) transactions)
     
 -- Filtrar transações por ano e mês.
 filterByYearAndMonth :: Int -> Int  -> IO [Transacao]
@@ -54,3 +47,21 @@ filterByYearMonthAndDay :: Int -> Int -> Int -> IO [Transacao]
 filterByYearMonthAndDay year month day = do
     filteredByMonth <- (filterByYearAndMonth year month)
     return (((filter . checkDay) day) filteredByMonth)
+
+firstTransaction :: Int -> Int -> IO [Transacao]
+firstTransaction y m = do
+    transactions <- (filterByYearAndMonth y m)
+    return (_firstTransaction transactions)
+
+_firstTransaction :: [Transacao] -> [Transacao]
+_firstTransaction [] = []
+_firstTransaction xs = [(xs !! 0)]
+
+initialBalance :: Int -> Int -> IO Double
+initialBalance y m = do
+    transaction <- (firstTransaction y m)
+    return (_initialBalance transaction)
+
+_initialBalance :: [Transacao] -> Double
+_initialBalance [] = 0
+_initialBalance xs = valor (xs !! 0)

@@ -2,118 +2,120 @@ import Tipos
 import Data.List (groupBy)
 import Utils
 
--- OPERATIONS  --
+-- OPERACOES  --
 
 -- Verificando se a 'Transacao' é uma receita ou despesa
 -- não pode ser do tipo 'APLICACAO' nem 'VALOR_APLICACAO'
-isIncomeOrExpense :: Transacao -> Bool
-isIncomeOrExpense t = not (elem "APLICACAO" (tipos t)  || elem "VALOR_APLICACAO" (tipos t))
+isReceiptOrDebt :: Transacao -> Bool
+isReceiptOrDebt t = (intersect (tipos t) [APLICACAO, SALDO_CORRENTE, VALOR_APLICACAO]) == []
+
+getReceiptsAndDebts:: Int -> Int -> IO [Transacao]
+getReceiptsAndDebts y m = do
+    transactions <- (filterByYearAndMonth y m)
+    return (filter isReceiptOrDebt transactions)
 
 -- Verificando se a 'Transacao' é uma receita
-isIncome:: Transacao -> Bool
-isIncome t = (isIncomeOrExpense t) && (valor t) >= 0
+isReceipt:: Transacao -> Bool
+isReceipt t = (valor t) > 0
 
 -- Verificando se a 'Transacao' é uma despesa
-isExpense:: Transacao -> Bool
-isExpense t = (isIncomeOrExpense t) && (valor t) < 0
+isDebt:: Transacao -> Bool
+isDebt t = (valor t) < 0
 
 -- Retorna a lista de débitos
-getExpenses :: Int -> Int -> IO [Transacao]
-getExpenses y m =  do
-    -- Removendo a transação SALDO_CORRENTE
-    transations <- (filterByYearAndMonth y m)
-    return (drop 1 (filter isExpense transations))
+getDebts :: Int -> Int -> IO [Transacao]
+getDebts y m =  do
+    transactions <- (getReceiptsAndDebts y m)
+    return (filter isDebt transactions)
 
 -- Retorna a lista de créditos
-getIncomes :: Int -> Int -> IO [Transacao]
-getIncomes y m =  do
-    -- Removendo a transação SALDO_CORRENTE
-    transations <- (filterByYearAndMonth y m)
-    return (drop 1 (filter isIncome transations))
-
+getReceipts :: Int -> Int -> IO [Transacao]
+getReceipts y m =  do
+    transactions <- (getReceiptsAndDebts y m)
+    return (filter isReceipt transactions)
 
 -- Calcular o valor das receitas (créditos) em um determinado mês e ano.
-calculateCredit :: Int -> Int -> IO Double
-calculateCredit year month = do
-    transations <- getIncomes year month
-    return ((sum . (map valor)) transations)
+receiptValue :: Int -> Int -> IO Double
+receiptValue y m = do
+    transactions <- getReceipts y m
+    return ((sum . (map valor)) transactions)
 
 -- Calcular o valor das despesas (débitos) em um determinado mês e ano.
-calculateDebit :: Int -> Int -> IO Double
-calculateDebit year month = do
-    transations <- getExpenses year month
-    return ((sum . (map valor)) transations)
+debtValue :: Int -> Int -> IO Double
+debtValue y m = do
+    transactions <- getDebts y m
+    return ((sum . (map valor)) transactions)
 
 -- Calcular a sobra (receitas - despesas) de determinado mês e ano
-calculateRemainder :: Int -> Int -> IO Double
-calculateRemainder year month = do
-    transations <- filterByYearAndMonth year month
-    credit <- (calculateCredit year month)
-    debit <- (calculateDebit year month)
-    return (credit - debit)
+leftover :: Int -> Int -> IO Double
+leftover y m = do
+    credit <- (receiptValue y m)
+    debit <- (debtValue y m)
+    return (credit + debit)
 
 -- Calcular o saldo final em um determinado ano e mês
-calculateMonthBalance :: Int -> Int -> IO Double
-calculateMonthBalance year month = do
-    transations <- (filterByYearAndMonth year month)
-    remainer <- (calculateRemainder year month)
-    return (_calculateMonthBalance transations remainer)
-
-
-_calculateMonthBalance :: [Transacao] -> Double -> Double
-_calculateMonthBalance [] remainer = remainer
-_calculateMonthBalance transations remainer = (valor (transations !! 0)) + remainer
-
--- Cria uma lista com os balanços
-createBalances :: [Transacao] -> [Double]
-createBalances [x] = []
-createBalances (x:y:xs) = [(valor x) + (valor y)] ++ (createBalances (y:xs))
+balance :: Int -> Int -> IO Double
+balance y m = do
+    baseBalance <- (initialBalance y m)
+    remainer <- (leftover y m)
+    return (baseBalance + remainer)
 
 -- Calcular o saldo máximo atingido em determinado ano e mês
-getMaxBalance :: Int -> Int -> IO Double
-getMaxBalance y m= do
-    transations <- filterByYearAndMonth y m
-    return (_getMinMaxBalance transations maximum)
+maxBalance :: Int -> Int -> IO Double
+maxBalance y m= do
+    monthBalance <- (initialBalance y m)
+    transactions <- (getReceiptsAndDebts y m)
+    return (_minMaxBalance transactions monthBalance maximum)
 
 -- Calcular o saldo mínimo atingido em determinado ano e mês
-getMinBalance :: Int -> Int -> IO Double
-getMinBalance y m= do
-    transations <- filterByYearAndMonth y m
-    return (_getMinMaxBalance transations minimum)
+minBalance :: Int -> Int -> IO Double
+minBalance y m= do
+    monthBalance <- (initialBalance y m)
+    transactions <- (getReceiptsAndDebts y m)
+    return (_minMaxBalance transactions monthBalance minimum)
 
-_getMinMaxBalance :: [Transacao] -> ([Double] -> Double) -> Double
-_getMinMaxBalance [] _ = 0
-_getMinMaxBalance transations f = ((valor (transations !! 0)) + ( f (createBalances transations)))
+_minMaxBalance :: [Transacao] -> Double -> ([Double] -> Double) -> Double
+_minMaxBalance [] _ _= 0
+_minMaxBalance transactions monthBalance f = ( f (createBalances (reverse (monthBalance:(map valor transactions)))))
+
+-- Cria uma lista com os balanços
+createBalances :: [Double] -> [Double]
+createBalances [x] = [x]
+createBalances (x:xs) = (x + (sum xs):(createBalances xs))
 
 -- -- Calcular a média das receitas em determinado ano
-getAnnualCreditMean :: Int -> IO Double
-getAnnualCreditMean year = (_getAnnualMean year calculateCredit)
+receiptMeanByYear :: Int -> IO Double
+receiptMeanByYear y = (_meanByYear y receiptValue)
 
 -- Calcular a média das despesas em determinado ano
-getAnnualDebitMean :: Int -> IO Double
-getAnnualDebitMean year = (_getAnnualMean year calculateDebit)
+debtMeanByYear :: Int -> IO Double
+debtMeanByYear y = (_meanByYear y debtValue)
 
 -- Calcular a média das sobras em determinado ano
-getAnnualBalanceMean:: Int -> IO Double
-getAnnualBalanceMean year = (_getAnnualMean year calculateMonthBalance)
+leftoverMeanByYear:: Int -> IO Double
+leftoverMeanByYear y = (_meanByYear y balance)
 
-_getAnnualMean :: Int -> (Int -> Int -> IO Double) -> IO Double
-_getAnnualMean year f = do
-    total <-  sequence (((map . f) year) [0..11])
+_meanByYear :: Int -> (Int -> Int -> IO Double) -> IO Double
+_meanByYear y f = do
+    total <-  sequence (((map . f) y) [0..11])
     return ((sum total) / 12)
 
 -- Retornar o fluxo de caixa de determinado mês/ano. O fluxo de caixa nada mais é do que uma lista contendo pares (dia,saldoFinalDoDia).
-getCashFlow :: Int -> Int -> IO [(Int, Double)]
-getCashFlow year month = do
-    expenses <- (getExpenses year month)
-    incomes <- (getIncomes year month)
-    return (_getCashFlow (quicksort (expenses ++ incomes)))
+cashFlow :: Int -> Int -> IO [(Int, Double)]
+cashFlow year month = do
+    transactions <- (getReceiptsAndDebts year month)
+    firstMonthTransaction <- (firstTransaction year month)
+    return (reverse (_cashFlow (firstMonthTransaction ++ transactions)))
 
-_getCashFlow :: [Transacao] -> [(Int, Double)]
-_getCashFlow transations = map sumDayFlow (groupBy sameDay transations)
+_cashFlow :: [Transacao] -> [(Int, Double)]
+_cashFlow transactions = sumDayFlow (reverse (groupBy sameDay transactions))
 
-sumDayFlow :: [Transacao] -> (Int, Double)
-sumDayFlow transations = (((dayOfMonth . datas) (transations !! 0)) , (sum (map valor transations)))
+sumDayFlow :: [[Transacao]] -> [(Int, Double)]
+sumDayFlow  [] = []
+sumDayFlow (x:xs) = [(((dayOfMonth . datas) (x !! 0)), (sum (map _sumDayFlow (x:xs))))] ++ (sumDayFlow xs)
+
+_sumDayFlow :: [Transacao] -> Double
+_sumDayFlow transactions = (sum (map valor transactions))
 
 sameDay :: Transacao -> Transacao -> Bool
 sameDay t1 t2 = ((dayOfMonth . datas) t1) == ((dayOfMonth . datas) t2)
