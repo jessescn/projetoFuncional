@@ -1,22 +1,38 @@
 module Utils (
     intersect,
+    sameDay,
+    sameMonth,
     checkDay,
     checkMonth,
     checkYear,
-    filterByYear,
-    filterByYearAndMonth,
-    filterByYearMonthAndDay,
     initialBalance,
-    firstTransaction
+    firstTransaction,
+    filterByYear,
+    filterByYearAndMonth
 ) where
 
-import Tipos
-import JsonParser
+import Types
 
 intersect []  _ = []
 intersect (x:xs) ys
     | x `elem` ys = [x]++(intersect xs ys)
     | otherwise = (intersect xs ys)
+
+-- Filtrar transações por ano.
+filterByYear :: Int -> [Transacao] -> [Transacao]
+filterByYear year transactions = (((filter . checkYear) year) transactions)
+
+-- Filtrar transações por ano e mês.
+filterByYearAndMonth :: Int -> Int  -> [Transacao] -> [Transacao]
+filterByYearAndMonth y m transactions = (((filter . checkMonth) m) (filterByYear y transactions))
+
+-- Checa se duas transacoes tem o mesmo valor dia
+sameDay :: Transacao -> Transacao -> Bool
+sameDay t1 t2 = ((dayOfMonth . datas) t1) == ((dayOfMonth . datas) t2)
+
+-- Checa se duas transacoes tem o mesmo valor mes
+sameMonth :: Transacao -> Transacao -> Bool
+sameMonth t1 t2 = ((month . datas) t1) == ((month . datas) t2)
 
 -- Checando o ano 
 checkYear :: Int -> Transacao -> Bool
@@ -30,37 +46,13 @@ checkMonth m  t = m == ((month . datas) t)
 checkDay :: Int -> Transacao -> Bool
 checkDay d t = d == ((dayOfMonth . datas) t)
 
--- Filtrar transações por ano.
-filterByYear :: Int -> IO [Transacao]
-filterByYear year = do
-    transactions <- getTransactions
-    return (((filter . checkYear) year) transactions)
-    
--- Filtrar transações por ano e mês.
-filterByYearAndMonth :: Int -> Int  -> IO [Transacao]
-filterByYearAndMonth year month = do
-    filteredByYear <- filterByYear year
-    return (((filter . checkMonth) month) filteredByYear)
-    
-    -- Filtrar transações por ano, mês e dia.
-filterByYearMonthAndDay :: Int -> Int -> Int -> IO [Transacao]
-filterByYearMonthAndDay year month day = do
-    filteredByMonth <- (filterByYearAndMonth year month)
-    return (((filter . checkDay) day) filteredByMonth)
+-- Recupera o saldo corrente (primeira transacao) de um mês, caso exista
+firstTransaction :: [Transacao] -> [Transacao]
+firstTransaction [] = []
+firstTransaction xs = [(xs !! 0)]
 
-firstTransaction :: Int -> Int -> IO [Transacao]
-firstTransaction y m = do
-    transactions <- (filterByYearAndMonth y m)
-    return (_firstTransaction transactions)
-
-_firstTransaction :: [Transacao] -> [Transacao]
-_firstTransaction [] = []
-_firstTransaction xs = [(xs !! 0)]
-
-initialBalance :: Int -> Int -> IO Double
-initialBalance y m = do
-    transaction <- (firstTransaction y m)
-    return (_initialBalance transaction)
+initialBalance :: [Transacao] -> Double
+initialBalance transaction = (_initialBalance transaction)
 
 _initialBalance :: [Transacao] -> Double
 _initialBalance [] = 0

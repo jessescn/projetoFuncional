@@ -1,4 +1,5 @@
 let transactions;
+
 const input = document.getElementById("input")
 const sumReducer = (accumulator, current) => accumulator + current.valor
 const simpleSumReducer = (accumulator, current) => accumulator + current
@@ -6,19 +7,26 @@ const simpleSumReducer = (accumulator, current) => accumulator + current
 function getData(){
   fetch('http://150.165.15.10:8080/todasTransacoes', {method: 'POST'})
     .then(r => r.json())
-    .then(json => transactions = json);
+    .then(json => transactions = json)
 }
 
 getData();
 
 function handleInput(f){
-  const { value } = input;
+  // const { value } = input;
+  const value = "2017 3" 
   const inputValues = value.split(" ")
                       .filter(item => item !=="").map(item => parseInt(item)); 
-  console.log(f(...inputValues));
+  
+  const values = (f(...inputValues))
+  
+  // console.log(f(...inputValues));
+  populateTable(values)
 }
 
-
+function populateTable(values) {
+  let table = document.querySelector('table')
+}
 
 function filterByYear(year){
   return transactions.filter(({data}) => data.year === year)

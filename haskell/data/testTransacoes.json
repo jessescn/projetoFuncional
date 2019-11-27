@@ -1,79 +1,279 @@
 [
-    {
-        "datas": {
-          "year": 2021,
-          "month": 1,
-          "dayOfMonth": 1,
-          "hourOfDay": 0,
-          "minute": 0,
-          "second": 0
-        },
-        "textoIdentificador": "Saldo Corrente",
-        "valor": 10000,
-        "descricao": "Saldo inicial do mes",
-        "numeroDOC": "00000000",
-        "classificada": true,
-        "tipos": [
-          "OUTRAS_RECEITAS",
-          "SALDO_CORRENTE"
-        ],
-        "arquivos": []
-      },
-      {
-        "datas": {
-          "year": 2020,
-          "month": 1,
-          "dayOfMonth": 1,
-          "hourOfDay": 0,
-          "minute": 0,
-          "second": 0
-        },
-        "textoIdentificador": "Saldo Corrente",
-        "valor": -550,
-        "descricao": "",
-        "numeroDOC": "00000000",
-        "classificada": true,
-        "tipos": [
-          "OUTRAS_RECEITAS"
-        ],
-        "arquivos": []
-      },
-      {
-        "datas": {
-          "year": 2020,
-          "month": 1,
-          "dayOfMonth": 1,
-          "hourOfDay": 0,
-          "minute": 0,
-          "second": 0
-        },
-        "textoIdentificador": "Saldo Corrente",
-        "valor": 300,
-        "descricao": "",
-        "numeroDOC": "00000000",
-        "classificada": true,
-        "tipos": [
-          "OUTRAS_RECEITAS"
-        ],
-        "arquivos": []
-      },
-      {
-        "datas": {
-          "year": 2020,
-          "month": 1,
-          "dayOfMonth": 1,
-          "hourOfDay": 0,
-          "minute": 0,
-          "second": 0
-        },
-        "textoIdentificador": "Saldo Corrente",
-        "valor": 100,
-        "descricao": "",
-        "numeroDOC": "00000000",
-        "classificada": true,
-        "tipos": [
-          "OUTRAS_RECEITAS"
-        ],
-        "arquivos": []
-      }
+  {
+    "datas": {
+      "year": 2018,
+      "month": 0,
+      "dayOfMonth": 1
+    },
+    "textoIdentificador": "Saldo Corrente",
+    "valor": 43980.15,
+    "descricao": "Saldo inicial do mes",
+    "numeroDOC": "00000000",
+    "tipos": [
+      "OUTRAS_RECEITAS",
+      "SALDO_CORRENTE"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2018,
+      "month": 0,
+      "dayOfMonth": 2
+    },
+    "textoIdentificador": "CHEQUE PAGO CAIXA",
+    "valor": -2260.0,
+    "descricao": "",
+    "numeroDOC": "002.782",
+    "tipos": [
+      "OUTROS"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2018,
+      "month": 0,
+      "dayOfMonth": 1
+    },
+    "textoIdentificador": "RDC - Longo CDI",
+    "valor": 2602.34,
+    "descricao": "valor aplicacao no mes",
+    "numeroDOC": "11111111",
+    "tipos": [
+      "OUTRAS_RECEITAS",
+      "VALOR_APLICACAO"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2018,
+      "month": 0,
+      "dayOfMonth": 2
+    },
+    "textoIdentificador": "CRED LIQ COB",
+    "valor": 92.45,
+    "descricao": "CRED TIT INEXISTENTE NN 4219-8",
+    "numeroDOC": "42198",
+    "tipos": [
+      "OUTRAS_RECEITAS"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2018,
+      "month": 4,
+      "dayOfMonth": 1
+    },
+    "textoIdentificador": "Saldo Corrente",
+    "valor": 57143.13,
+    "descricao": "Saldo inicial do mes",
+    "numeroDOC": "000005958",
+    "tipos": [
+      "OUTRAS_RECEITAS",
+      "SALDO_CORRENTE"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2018,
+      "month": 4,
+      "dayOfMonth": 1
+    },
+    "textoIdentificador": "RDC - Longo CDI",
+    "valor": 2654.38,
+    "descricao": "valor aplicacao no mes",
+    "numeroDOC": "11111111",
+    "tipos": [
+      "OUTRAS_RECEITAS",
+      "VALOR_APLICACAO"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2018,
+      "month": 4,
+      "dayOfMonth": 6
+    },
+    "textoIdentificador": "CHEQUE PAGO CAIXA",
+    "valor": 750.0,
+    "descricao": "",
+    "numeroDOC": "002.978",
+    "tipos": [
+      "OUTROS"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2018,
+      "month": 4,
+      "dayOfMonth": 4
+    },
+    "textoIdentificador": "CRÉD.LIQ.COBRANÇA",
+    "valor": 929.44,
+    "descricao": "",
+    "numeroDOC": "0000052244",
+    "tipos": [
+      "OUTRAS_RECEITAS"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2018,
+      "month": 4,
+      "dayOfMonth": 4
+    },
+    "textoIdentificador": "CHEQUE PAGO CAIXA",
+    "valor": -250.0,
+    "descricao": "",
+    "numeroDOC": "002.980",
+    "tipos": [
+      "OUTROS"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2018,
+      "month": 4,
+      "dayOfMonth": 5
+    },
+    "textoIdentificador": "CHEQUE PAGO CAIXA",
+    "valor": -100.0,
+    "descricao": "",
+    "numeroDOC": "002.984",
+    "tipos": [
+      "OUTROS"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2019,
+      "month": 0,
+      "dayOfMonth": 1
+    },
+    "textoIdentificador": "Saldo Corrente",
+    "valor": 131301.66,
+    "descricao": "Saldo inicial do mes",
+    "numeroDOC": "00000000",
+    "tipos": [
+      "OUTRAS_RECEITAS",
+      "SALDO_CORRENTE"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2019,
+      "month": 0,
+      "dayOfMonth": 1
+    },
+    "textoIdentificador": "RDC - Longo CDI",
+    "valor": 2758.12,
+    "descricao": "valor aplicacao no mes",
+    "numeroDOC": "11111111",
+    "tipos": [
+      "OUTRAS_RECEITAS",
+      "VALOR_APLICACAO"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2019,
+      "month": 0,
+      "dayOfMonth": 2
+    },
+    "textoIdentificador": "CHEQUE PAGO CAIXA",
+    "valor": -500.0,
+    "descricao": "",
+    "numeroDOC": "003.390",
+    "tipos": [
+      "OUTROS"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2019,
+      "month": 0,
+      "dayOfMonth": 3
+    },
+    "textoIdentificador": "CRÉD.LIQ.COBRANÇA",
+    "valor": 4407.76,
+    "descricao": "",
+    "numeroDOC": "0000035123",
+    "tipos": [
+      "OUTRAS_RECEITAS"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2019,
+      "month": 3,
+      "dayOfMonth": 1
+    },
+    "textoIdentificador": "Saldo Corrente",
+    "valor": 163797.14,
+    "descricao": "Saldo inicial do mes",
+    "numeroDOC": "00000000",
+    "tipos": [
+      "OUTRAS_RECEITAS",
+      "SALDO_CORRENTE"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2019,
+      "month": 3,
+      "dayOfMonth": 1
+    },
+    "textoIdentificador": "CH COOP/AG.DEP.CTA",
+    "valor": -10000.0,
+    "descricao": "",
+    "numeroDOC": "003.539",
+    "tipos": [
+      "OUTROS"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2019,
+      "month": 3,
+      "dayOfMonth": 8
+    },
+    "textoIdentificador": "CRÉD.LIQ.COBRANÇA",
+    "valor": 479.04,
+    "descricao": "",
+    "numeroDOC": "0000068846",
+    "tipos": [
+      "OUTRAS_RECEITAS"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2019,
+      "month": 3,
+      "dayOfMonth": 15
+    },
+    "textoIdentificador": "APLICAÇÃO RDC",
+    "valor": -2428.6,
+    "descricao": "",
+    "numeroDOC": "41 - 2",
+    "tipos": [
+      "APLICACAO"
+    ],
+    "files": []
+  }
 ]
