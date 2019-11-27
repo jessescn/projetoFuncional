@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveGeneric #-}
-module Tipos 
+module Types 
 (
     Transacao (..),
     GregorianCalendar (..),

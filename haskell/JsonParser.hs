@@ -7,7 +7,7 @@ module JsonParser
 import qualified Data.ByteString.Lazy as B  
 import Data.Aeson
 import Data.Maybe
-import Tipos
+import Types
 
 jsonFile :: FilePath
 jsonFile = "data/transacoes.json"
