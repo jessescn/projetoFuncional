@@ -5,10 +5,10 @@ module Utils (
     checkDay,
     checkMonth,
     checkYear,
-    _filterByYear,
-    _filterByYearAndMonth,
     initialBalance,
-    firstTransaction
+    firstTransaction,
+    filterByYear,
+    filterByYearAndMonth
 ) where
 
 import Types
@@ -17,6 +17,14 @@ intersect []  _ = []
 intersect (x:xs) ys
     | x `elem` ys = [x]++(intersect xs ys)
     | otherwise = (intersect xs ys)
+
+-- Filtrar transações por ano.
+filterByYear :: Int -> [Transacao] -> [Transacao]
+filterByYear year transactions = (((filter . checkYear) year) transactions)
+
+-- Filtrar transações por ano e mês.
+filterByYearAndMonth :: Int -> Int  -> [Transacao] -> [Transacao]
+filterByYearAndMonth y m transactions = (((filter . checkMonth) m) (filterByYear y transactions))
 
 -- Checa se duas transacoes tem o mesmo valor dia
 sameDay :: Transacao -> Transacao -> Bool
@@ -37,14 +45,6 @@ checkMonth m  t = m == ((month . datas) t)
 -- Checando o dia
 checkDay :: Int -> Transacao -> Bool
 checkDay d t = d == ((dayOfMonth . datas) t)
-
--- Filtrar transações por ano.
-_filterByYear :: Int -> [Transacao] -> [Transacao]
-_filterByYear year transactions = (((filter . checkYear) year) transactions)
-    
--- Filtrar transações por ano e mês.
-_filterByYearAndMonth :: Int -> [Transacao] -> [Transacao]
-_filterByYearAndMonth month filteredByYear =  (((filter . checkMonth) month) filteredByYear)
 
 -- Recupera o saldo corrente (primeira transacao) de um mês, caso exista
 firstTransaction :: [Transacao] -> [Transacao]

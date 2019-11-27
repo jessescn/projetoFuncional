@@ -1,21 +1,41 @@
 import Utils
 import Types
 import JsonParser
-import Functions
+import Controller
 
 import Test.HUnit
 
--- Testando a função 'intersect' 
-test1 = TestCase(assertEqual "interseção vazia"   [] (intersect [2, 1] [3]))
-test2 = TestCase(assertEqual "interseção não vazia" [3,4] (intersect [1,2,3,4] [3,4,5]))
+testFilterByYear = TestCase( do
+    transactions <- getTestTransactions
+    assertEqual "filtro por ano - primeiro valor"  43980.15 (valor (head (filterByYear 2018 transactions)))
+    assertEqual "filtro por ano - último valor" 929.44 (valor (last (filterByYear 2018 transactions))))
 
--- t1 =( Transacao (GregorianCalendar 2017 2 5) "tran-1" -350 "no-description" "000505" [RECEITA_OPERACIONAL])
--- t3 = (Transacao (GregorianCalendar 2017 2 5) "tran-2" 50 "no-description" "000506" [TAXA_CONDOMINIO])
--- t2 = (Transacao (GregorianCalendar 2018 4 5) "tran-3"  200 "no-description" "000507" [RECEITA_OPERACIONAL])
+testFilterByMonth = TestCase( do
+    transactions <- getTestTransactions
+    assertEqual "filtro por mês - primeiro valor"  57143.13  (valor (head (filterByYearAndMonth 2018 4 transactions)))
+    assertEqual "filtro por mês - último valor"  929.44 (valor (last (filterByYearAndMonth 2018 4 transactions))))
 
--- Testando a função 'sameDay'
-test3  = TestCase (do 
-    transactions <- getTransactions
-    assertEqual "dias iguais" True (sameDay (transactions !! 0) (transactions !! 1)))
+testReceiptValue = TestCase (do 
+    transactions <- getTestTransactions
+    assertEqual "Cálculo do valor das receitas - apenas uma receita"  92.45 (receiptValue 2018 0 transactions)
+    assertEqual "Cálculo do valor das receitas - mais de uma receita"  1679.44 (receiptValue 2018 4 transactions))
 
-utilTests = TestList [test1, test2, test3]
+testDebtValue = TestCase (do 
+    transactions <- getTestTransactions
+    assertEqual "Cálculo do valor das despesas - apenas uma receita"   (-2260.0) (debtValue 2018 0 transactions)
+    assertEqual "Cálculo do valor das despesas - mais de uma receita"  (-350) (debtValue 2018 4 transactions))
+
+testLeftover =  TestCase (do
+    transactions <- getTestTransactions
+    assertEqual "Cálculo da sobra - apenas uma receita e uma despesa"   (-2167.55) (leftover 2018 0 transactions)
+    assertEqual "Cálculo da sobra - mais de uma receita e uma despesa"  (1329.44) (leftover 2018 4 transactions))
+
+testBalance = TestCase (do
+    transactions <- getTestTransactions
+    assertEqual "Cálculo do saldo final  - mês vazio" 0.0 (balance 2018 3 transactions)
+    assertEqual "Cálculo do saldo final" 41812.6 (balance 2018 0 transactions))
+
+utilTests = TestList [testFilterByYear, testFilterByMonth, testReceiptValue, testDebtValue, testLeftover, testBalance]
+
+main = do
+    runTestTT utilTests
