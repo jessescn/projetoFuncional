@@ -1,6 +1,7 @@
 let transactions;
 const input = document.getElementById("input")
 const sumReducer = (accumulator, current) => accumulator + current.valor
+const simpleSumReducer = (accumulator, current) => accumulator + current
 
 function getData(){
   fetch('http://150.165.15.10:8080/todasTransacoes', {method: 'POST'})
@@ -76,10 +77,10 @@ function balance(year, month = 11){
 
 function compareMonthBalances(year, month, f){
   const monthTransactions = filterByYearMonth(year, month)
-  const transactions = filterValidTransactions(monthTransactions);
-  const initialBalance = monthTransactions[0].valor;
+  const initialBalance = monthTransactions[0];
+  const transactions = [initialBalance].concat(filterValidTransactions(monthTransactions));
   const balances = transactions.map((item, index) => (transactions.slice(0, index + 1)).reduce(sumReducer, 0))
-  return f(initialBalance, ...balances)
+  return f(...balances)
 }
 
 function maxBalance(year, month){
@@ -105,7 +106,7 @@ function debtMeanByYear(year){
 function leftOverMeanByYear(year){
   const filteredDates = validDates.filter(({year: y}) => y == year);
   const leftOvers = filteredDates.map(({year: y, month: m}) => leftover(y, m))
-  const sum = leftOvers.reduce(sumReducer) / filteredDates.length
+  const sum = leftOvers.reduce(simpleSumReducer)
   return sum / filteredDates.length;
 }
 
@@ -119,7 +120,7 @@ function leftOverOfDay(year, month, day){
 }
 
 function dayBalance(year, month, day){
-  if(day == 1) return filterByYearMonth(year, month)[0].valor;
+  if(day == 1) return filterByYearMonth(year, month)[0].valor + leftOverOfDay(year, month, day);
   return leftOverOfDay(year, month, day) + dayBalance(year, month, day - 1);
 }
 
