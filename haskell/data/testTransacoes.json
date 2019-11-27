@@ -19,6 +19,21 @@
     "datas": {
       "year": 2018,
       "month": 0,
+      "dayOfMonth": 2
+    },
+    "textoIdentificador": "CHEQUE PAGO CAIXA",
+    "valor": -2260.0,
+    "descricao": "",
+    "numeroDOC": "002.782",
+    "tipos": [
+      "OUTROS"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2018,
+      "month": 0,
       "dayOfMonth": 1
     },
     "textoIdentificador": "RDC - Longo CDI",
@@ -28,21 +43,6 @@
     "tipos": [
       "OUTRAS_RECEITAS",
       "VALOR_APLICACAO"
-    ],
-    "files": []
-  },
-  {
-    "datas": {
-      "year": 2018,
-      "month": 0,
-      "dayOfMonth": 2
-    },
-    "textoIdentificador": "CHEQUE PAGO CAIXA",
-    "valor": -2260.0,
-    "descricao": "",
-    "numeroDOC": "002.782",
-    "tipos": [
-      "OUTROS"
     ],
     "files": []
   },
@@ -97,36 +97,6 @@
     "datas": {
       "year": 2018,
       "month": 4,
-      "dayOfMonth": 4
-    },
-    "textoIdentificador": "CHEQUE PAGO CAIXA",
-    "valor": -250.0,
-    "descricao": "",
-    "numeroDOC": "002.980",
-    "tipos": [
-      "OUTROS"
-    ],
-    "files": []
-  },
-  {
-    "datas": {
-      "year": 2018,
-      "month": 4,
-      "dayOfMonth": 5
-    },
-    "textoIdentificador": "CHEQUE PAGO CAIXA",
-    "valor": -100.0,
-    "descricao": "",
-    "numeroDOC": "002.984",
-    "tipos": [
-      "OUTROS"
-    ],
-    "files": []
-  },
-  {
-    "datas": {
-      "year": 2018,
-      "month": 4,
       "dayOfMonth": 6
     },
     "textoIdentificador": "CHEQUE PAGO CAIXA",
@@ -150,6 +120,36 @@
     "numeroDOC": "0000052244",
     "tipos": [
       "OUTRAS_RECEITAS"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2018,
+      "month": 4,
+      "dayOfMonth": 4
+    },
+    "textoIdentificador": "CHEQUE PAGO CAIXA",
+    "valor": -250.0,
+    "descricao": "",
+    "numeroDOC": "002.980",
+    "tipos": [
+      "OUTROS"
+    ],
+    "files": []
+  },
+  {
+    "datas": {
+      "year": 2018,
+      "month": 4,
+      "dayOfMonth": 5
+    },
+    "textoIdentificador": "CHEQUE PAGO CAIXA",
+    "valor": -100.0,
+    "descricao": "",
+    "numeroDOC": "002.984",
+    "tipos": [
+      "OUTROS"
     ],
     "files": []
   },

@@ -77,14 +77,19 @@ createBalances (x:xs) = (x + (sum xs):(createBalances xs))
 
 -- -- Calcular a média das receitas em determinado ano
 _receiptMeanByYear :: [Transacao] -> Double
-_receiptMeanByYear transactions = (_meanByYear (getReceipts transactions) sumReceipts)
+_receiptMeanByYear [] = 0.0
+_receiptMeanByYear transactions = ((sum (map valor annualReceipts)) / fromIntegral ( length annualReceipts))
+    where annualReceipts =  (getReceipts transactions)
 
 -- Calcular a média das despesas em determinado ano
 _debtMeanByYear :: [Transacao] -> Double
-_debtMeanByYear transactions = (_meanByYear (getDebts transactions) sumDebts)
+_debtMeanByYear [] = 0.0
+_debtMeanByYear transactions = ((sum (map valor annualDebts)) / fromIntegral (length annualDebts))
+    where annualDebts =  (getDebts transactions)
 
 -- Calcular a média das sobras em determinado ano
 _leftoverMeanByYear:: [Transacao] -> Double
+_leftoverMeanByYear [] = 0.0
 _leftoverMeanByYear transactions = (_meanByYear  (getReceiptsAndDebts transactions) _leftover)
 
 _meanByYear :: [Transacao] -> ([Transacao] -> Double) -> Double
