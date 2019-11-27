@@ -13,19 +13,11 @@ function getData(){
 getData();
 
 function handleInput(f){
-  // const { value } = input;
-  const value = "2017 3" 
+  const { value } = input;
   const inputValues = value.split(" ")
                       .filter(item => item !=="").map(item => parseInt(item)); 
-  
-  const values = (f(...inputValues))
-  
-  // console.log(f(...inputValues));
-  populateTable(values)
-}
+  console.log(f(...inputValues));
 
-function populateTable(values) {
-  let table = document.querySelector('table')
 }
 
 function filterByYear(year){
